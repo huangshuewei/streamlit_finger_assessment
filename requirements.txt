@@ -1,0 +1,12 @@
+opencv-python
+opencv-contrib-python
+streamlit==1.4.0
+numpy
+scikit-learn
+Pillow
+keras
+tensorflow
+scikit-image
+mediapipe
+pandas
+scipy
