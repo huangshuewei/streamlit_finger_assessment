@@ -87,7 +87,7 @@ def getPrediction(hand_image):
     # le.inverse_transform([2])
     
     # Load model
-    model = models.load_model("model/model_finger_assessment_512.h5",compile=False)
+    model = models.load_model("CNN_DenseNet169.h5",compile=False)
     
     # Apply mediapipe
     # First step is to initialize the Hands class an store it in a variable
