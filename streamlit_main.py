@@ -19,7 +19,7 @@ import pandas as pd
 from scipy import ndimage
 
 ####
-@st.cache(ttl=24*3600)
+@st.cache(ttl=5)
 def draw_hand_pts_lines(cv2_img,
                         handList,
                         thumb_color,
@@ -77,7 +77,7 @@ def draw_hand_pts_lines(cv2_img,
     
     return cv2_img
 
-@st.cache(ttl=24*3600)
+@st.cache(ttl=5)
 def getPrediction(hand_image):
     
     ## Set class names
