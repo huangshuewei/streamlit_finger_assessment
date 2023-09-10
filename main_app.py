@@ -215,6 +215,7 @@ def getPrediction(hand_image):
 
 logo_img = Image.open("logo.png")
 st.image(logo_img)  
+st.write("The digital Manchester Digit Score (dMDS)")
 st.write("This is a prototype which is used to assess finger function.")
 st.write("Methods are based on machine learning and computer vision.")
 load_img = None
