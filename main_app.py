@@ -233,8 +233,10 @@ load_img = None
 
 selected_tab = st.radio("Select a Tab", ["Image Version", "Video Version (Test)"])
 # tab1, tab2 = st.tabs(["Image Version", "Video Version (Test)"])
-c1, c2, c3, c4 = st.columns(4)
+c1, c2 = st.columns(2)
+c3, c4 = st.columns(2)
 
+set_images = []
 
 
 if selected_tab == "Image Version":
