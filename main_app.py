@@ -293,11 +293,10 @@ with c3:
             if cur_frame % frame_skip == 0: # only analyze every n=300 frames
                 print('frame: {}'.format(cur_frame)) 
 
-                print(frame)
-                # __, assessed_result, assessed_img = getPrediction(frame)
-                # assessed_img[:,:,[0,1,2]] = assessed_img[:,:,[2,1,0]]
+                __, assessed_result, assessed_img = getPrediction(frame)
+                assessed_img[:,:,[0,1,2]] = assessed_img[:,:,[2,1,0]]
 
-                set_images.append(frame)
+                set_images.append(assessed_img)
 
                 # pil_img = Image.fromarray(assessed_img) # convert opencv frame (with type()==numpy) into PIL Image
                 # pil_img = Image.fromarray(assessed_img)
@@ -308,11 +307,11 @@ with c3:
 
         set_images.shape
 
-        # if set_images is not []:
-        #     out = cv2.VideoWriter('project.avi',cv2.VideoWriter_fourcc(*'DIVX'), 0.5, (1080, 1920))
+        if set_images is not []:
+            out = cv2.VideoWriter('project.avi',cv2.VideoWriter_fourcc(*'DIVX'), 0.5, (1080, 1920))
 
-        #     for i in range(len(set_images)):
-        #         out.write(set_images[i])
-        #     out.release()   
+            for i in range(len(set_images)):
+                out.write(set_images[i])
+            out.release()   
 
-        #     st.video(out)
+            st.video(out)
