@@ -266,7 +266,7 @@ with c1:
 with c3:
     st.title("Not open yet.")
     uploaded_video = st.file_uploader("Choose video", type=["mp4", "mov"])
-    frame_skip = 60 # display every 60 frames
+    frame_skip = 150 # display every 60 frames
 
     if uploaded_video is not None: # run only when user uploads video
         vid = uploaded_video.name
@@ -302,7 +302,8 @@ with c3:
                 # pil_img = Image.fromarray(assessed_img)
                 # st.image(pil_img)
             cur_frame += 1
-        
-        print(np.array(set_images).shape)
+        ccc = np.array(set_images)
+        print(ccc.shape)
+        st.title(str(ccc.shape)))
         # if set_images is not []:
         #     out = cv2.VideoWriter('project.avi',cv2.VideoWriter_fourcc(*'DIVX'), 15, size)
