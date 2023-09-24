@@ -266,7 +266,7 @@ with c1:
 
 with c3:
     st.title("Not open yet.")
-    uploaded_video = st.file_uploader("Choose video", type=["mp4", "mov"])
+    uploaded_video = st.file_uploader("Choose video", type=["mp4", "mov", "avi"])
 
     if uploaded_video is not None: # run only when user uploads video
         vid = uploaded_video.name
@@ -274,7 +274,7 @@ with c3:
             f.write(uploaded_video.read()) # save video to disk
 
         temp_dir = tempfile.mkdtemp()
-        temp_output_path = os.path.join(temp_dir, "output.mp4")
+        temp_output_path = os.path.join(temp_dir, "output.avi")
 
         st.markdown(f"""
         ### Files
@@ -292,7 +292,7 @@ with c3:
         success = True
 
         # Define codec and create VideoWriter object to save the processed video
-        fourcc = cv2.VideoWriter_fourcc('M' ,'P' ,'4' ,'V')
+        fourcc = cv2.VideoWriter_fourcc(*'XVID')
         out = cv2.VideoWriter(temp_output_path, fourcc, 0.5, (1080, 1920), isColor=False)
 
         set_images = []
