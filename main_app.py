@@ -19,6 +19,7 @@ import pandas as pd
 from scipy import ndimage
 import tempfile
 import os
+import base64
 
 ####
 @st.cache(ttl=5)
@@ -266,14 +267,14 @@ with c1:
 with c3:
     st.title("Not open yet.")
     uploaded_video = st.file_uploader("Choose video", type=["mp4", "mov"])
-    frame_skip = 60 # display every 60 frames
 
     if uploaded_video is not None: # run only when user uploads video
         vid = uploaded_video.name
         with open(vid, mode='wb') as f:
             f.write(uploaded_video.read()) # save video to disk
 
-        # print(vid)
+        temp_dir = tempfile.mkdtemp()
+        temp_output_path = os.path.join(temp_dir, "output.mp4")
 
         st.markdown(f"""
         ### Files
@@ -282,25 +283,29 @@ with c3:
         unsafe_allow_html=True) # display file name
 
         vidcap = cv2.VideoCapture(vid) # load video from disk
+
+        # Get video details
+        fps = int(vidcap.get(5))
+        frame_skip = 2*fps
+
         cur_frame = 0
         success = True
 
+        # Define codec and create VideoWriter object to save the processed video
+        fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+        out = cv2.VideoWriter(temp_output_path, fourcc, 0.5, (1080, 1920), isColor=False)
+
         set_images = []
 
+        # Process
         while success:
             success, frame = vidcap.read() # get next frame from video
             
             if cur_frame % frame_skip == 0: # only analyze every n=300 frames
                 print('frame: {}'.format(cur_frame)) 
-
                 __, assessed_result, assessed_img = getPrediction(frame)
                 assessed_img[:,:,[0,1,2]] = assessed_img[:,:,[2,1,0]]
-
                 set_images.append(assessed_img)
-
-                # pil_img = Image.fromarray(assessed_img) # convert opencv frame (with type()==numpy) into PIL Image
-                # pil_img = Image.fromarray(assessed_img)
-                # st.image(pil_img)
             cur_frame += 1
         
         set_images = np.array(set_images)
@@ -308,12 +313,20 @@ with c3:
         set_images.shape
 
         if set_images is not []:
-            # out = cv2.VideoWriter('project.avi',cv2.VideoWriter_fourcc(*'DIVX'), 0.5, (1080, 1920))
 
-            # for i in range(len(set_images)):
-            #     out.write(set_images[i])
-            # out.release()   
+            # Write the processed frame to the output video
+            for i in range(len(set_images)):
+                out.write(set_images[i])
+        vidcap.release()
+        out.release()
+
+        st.video(temp_output_path)
+
+        # Offer download link for processed video
+        with open(temp_output_path, "rb") as video_file:
+            video_bytes = video_file.read()
+        video_b64 = base64.b64encode(video_bytes).decode()
+        st.download_button("Download Processed Video", video_b64, key="download_button")
 
             # st.video(out)
-
-            st.image(set_images)
+            # st.image(set_images)
