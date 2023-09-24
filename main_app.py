@@ -323,10 +323,10 @@ with c3:
         st.video(temp_output_path)
 
         # Offer download link for processed video
-        with open(temp_output_path, "rb") as video_file:
-            video_bytes = video_file.read()
-        video_b64 = base64.b64encode(video_bytes).decode()
-        st.download_button("Download Processed Video", video_b64, key="download_button")
+        # with open(temp_output_path, "rb") as video_file:
+        #     video_bytes = video_file.read()
+        # video_b64 = base64.b64encode(video_bytes).decode()
+        # st.download_button("Download Processed Video", video_b64, key="download_button")
         uploaded_video = None
             # st.video(out)
             # st.image(set_images)
