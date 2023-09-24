@@ -210,7 +210,7 @@ def getPrediction(hand_image):
     
     # plt.imshow(sample_img_color)
     
-    out_put = ("Index finger: " + grades[0] + ",Middle finger: " + grades[1] + ",Ring finger: " + grades[2] + ",Little finger: " + grades[3]).split(',')
+    out_put = ("Index finger: " + grades[0] + ", Middle finger: " + grades[1] + ", Ring finger: " + grades[2] + ", Little finger: " + grades[3]).split(',')
     sample_img_color = cv2.putText(sample_img_color, out_put[0], (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 
                                    1, (0, 0, 255), 5, cv2.LINE_AA)
     sample_img_color = cv2.putText(sample_img_color, out_put[1], (50, 100), cv2.FONT_HERSHEY_SIMPLEX, 
@@ -266,12 +266,14 @@ with c1:
 with c3:
     st.title("Not open yet.")
     uploaded_video = st.file_uploader("Choose video", type=["mp4", "mov"])
-    frame_skip = 300 # display every 300 frames
+    frame_skip = 10 # display every 10 frames
 
     if uploaded_video is not None: # run only when user uploads video
         vid = uploaded_video.name
-        with open(vid, mode='wb') as f:
-            f.write(uploaded_video.read()) # save video to disk
+        # with open(vid, mode='wb') as f:
+        #     f.write(uploaded_video.read()) # save video to disk
+
+        # print(vid)
 
         st.markdown(f"""
         ### Files
@@ -287,6 +289,9 @@ with c3:
             success, frame = vidcap.read() # get next frame from video
             if cur_frame % frame_skip == 0: # only analyze every n=300 frames
                 print('frame: {}'.format(cur_frame)) 
-                pil_img = Image.fromarray(frame) # convert opencv frame (with type()==numpy) into PIL Image
+
+                __, assessed_result, assessed_img = getPrediction(frame)
+
+                pil_img = Image.fromarray(assessed_img) # convert opencv frame (with type()==numpy) into PIL Image
                 st.image(pil_img)
             cur_frame += 1
