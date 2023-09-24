@@ -231,102 +231,104 @@ st.write("This is a prototype which is used to assess finger function.")
 st.write("Methods are based on machine learning and computer vision.")
 load_img = None
 
-c1, c2, c3 = st.columns(3)
+c1, c2, c3, c4 = st.columns(4)
+tab1, tab2 = st.tabs(["Image Version", "Video Version (Test)"])
 
-
-with c1:
-    st.title("Upload a frontal-hand image.")
-    
-    uploaded_file = st.file_uploader("Choose a frontal-hand image taken by smartphone...")
-    
-    if uploaded_file:
-        load_img = Image.open(uploaded_file)
-        load_img = np.array(load_img)
-        img_shape = np.shape(load_img)
+with tab1:
+    with c1:
+        st.title("Upload a frontal-hand image.")
         
-        if img_shape[1] > img_shape[0]:
-            load_img = ndimage.rotate(load_img, 180, reshape=True)
-            load_img = ndimage.rotate(load_img, 90, reshape=True)
+        uploaded_file = st.file_uploader("Choose a frontal-hand image taken by smartphone...")
         
-        print("check point")
-        st.image(load_img)   
-
-    with c2:
-        st.title("Analysing after uploading the image.")
-        if np.array(load_img) is not None:
-            if st.button('Start analysing'):
-                __, assessed_result, assessed_img = getPrediction(load_img)
-                df = pd.DataFrame({'Fingers': ["Index", "Middle", "Ring", "Little"],
-                                   'Grades': [assessed_result[0], assessed_result[1], 
-                                              assessed_result[2], assessed_result[3]]})
-                st.title("Result:")
-                st.table(df)
-                st.image(assessed_img)
-
-
-with c3:
-    st.title("Not open yet.")
-    uploaded_video = st.file_uploader("Choose video", type=["mp4", "mov", "avi"])
-
-    if uploaded_video is not None: # run only when user uploads video
-        vid = uploaded_video.name
-        with open(vid, mode='wb') as f:
-            f.write(uploaded_video.read()) # save video to disk
-
-        temp_dir = tempfile.mkdtemp()
-        temp_output_path = os.path.join(temp_dir, "output.avi")
-
-        st.markdown(f"""
-        ### Files
-        - {vid}
-        """,
-        unsafe_allow_html=True) # display file name
-
-        vidcap = cv2.VideoCapture(vid) # load video from disk
-
-        # Get video details
-        fps = int(vidcap.get(5))
-        frame_skip = 4*fps
-
-        cur_frame = 0
-        success = True
-
-        # Define codec and create VideoWriter object to save the processed video
-        fourcc = cv2.VideoWriter_fourcc(*'XVID')
-        out = cv2.VideoWriter(temp_output_path, fourcc, 0.5, (1080, 1920), isColor=True)
-
-        set_images = []
-
-        # Process
-        while success:
-            success, frame = vidcap.read() # get next frame from video
+        if uploaded_file:
+            load_img = Image.open(uploaded_file)
+            load_img = np.array(load_img)
+            img_shape = np.shape(load_img)
             
-            if cur_frame % frame_skip == 0: # only analyze every n=300 frames
-                print('frame: {}'.format(cur_frame)) 
-                __, assessed_result, assessed_img = getPrediction(frame)
-                assessed_img[:,:,[0,1,2]] = assessed_img[:,:,[2,1,0]]
-                set_images.append(assessed_img)
-            cur_frame += 1
-        
-        set_images = np.array(set_images)
+            if img_shape[1] > img_shape[0]:
+                load_img = ndimage.rotate(load_img, 180, reshape=True)
+                load_img = ndimage.rotate(load_img, 90, reshape=True)
+            
+            print("check point")
+            st.image(load_img)   
 
-        # set_images.shape
+        with c2:
+            st.title("Analysing after uploading the image.")
+            if np.array(load_img) is not None:
+                if st.button('Start analysing'):
+                    __, assessed_result, assessed_img = getPrediction(load_img)
+                    df = pd.DataFrame({'Fingers': ["Index", "Middle", "Ring", "Little"],
+                                    'Grades': [assessed_result[0], assessed_result[1], 
+                                                assessed_result[2], assessed_result[3]]})
+                    st.title("Result:")
+                    st.table(df)
+                    st.image(assessed_img)
 
-        # if set_images is not []:
+with tab2:
+    with c3:
+        st.title("Not open yet.")
+        uploaded_video = st.file_uploader("Choose video", type=["mp4", "mov", "avi"])
 
-        #     # Write the processed frame to the output video
-        #     for i in range(len(set_images)):
-        #         out.write(set_images[i])
-        # vidcap.release()
-        # out.release()
+        if uploaded_video is not None: # run only when user uploads video
+            vid = uploaded_video.name
+            with open(vid, mode='wb') as f:
+                f.write(uploaded_video.read()) # save video to disk
 
-        # st.video(temp_output_path)
+            temp_dir = tempfile.mkdtemp()
+            temp_output_path = os.path.join(temp_dir, "output.avi")
 
-        # Offer download link for processed video
-        # with open(temp_output_path, "rb") as video_file:
-        #     video_bytes = video_file.read()
-        # video_b64 = base64.b64encode(video_bytes).decode()
-        # st.download_button("Download Processed Video", video_b64, key="download_button")
-        uploaded_video = None
-            # st.video(out)
-        st.image(set_images)
+            st.markdown(f"""
+            ### Files
+            - {vid}
+            """,
+            unsafe_allow_html=True) # display file name
+
+            vidcap = cv2.VideoCapture(vid) # load video from disk
+
+            # Get video details
+            fps = int(vidcap.get(5))
+            frame_skip = 4*fps
+
+            cur_frame = 0
+            success = True
+
+            # Define codec and create VideoWriter object to save the processed video
+            fourcc = cv2.VideoWriter_fourcc(*'XVID')
+            out = cv2.VideoWriter(temp_output_path, fourcc, 0.5, (1080, 1920), isColor=True)
+
+            set_images = []
+
+            # Process
+            while success:
+                success, frame = vidcap.read() # get next frame from video
+                
+                if cur_frame % frame_skip == 0: # only analyze every n=300 frames
+                    print('frame: {}'.format(cur_frame)) 
+                    __, assessed_result, assessed_img = getPrediction(frame)
+                    assessed_img[:,:,[0,1,2]] = assessed_img[:,:,[2,1,0]]
+                    set_images.append(assessed_img)
+                cur_frame += 1
+            
+            set_images = np.array(set_images)
+
+            # set_images.shape
+
+            # if set_images is not []:
+
+            #     # Write the processed frame to the output video
+            #     for i in range(len(set_images)):
+            #         out.write(set_images[i])
+            # vidcap.release()
+            # out.release()
+
+            # st.video(temp_output_path)
+
+            # Offer download link for processed video
+            # with open(temp_output_path, "rb") as video_file:
+            #     video_bytes = video_file.read()
+            # video_b64 = base64.b64encode(video_bytes).decode()
+            # st.download_button("Download Processed Video", video_b64, key="download_button")
+            uploaded_video = None
+                # st.video(out)
+        with c4:
+            st.image(set_images)
