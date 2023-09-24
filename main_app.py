@@ -292,7 +292,7 @@ with c3:
             print(np.asarray(frame).shape)
             if cur_frame % frame_skip == 0: # only analyze every n=300 frames
                 print('frame: {}'.format(cur_frame)) 
-                # print(frame.shape)
+                print("********"+frame.shape)
                 __, assessed_result, assessed_img = getPrediction(frame)
                 assessed_img[:,:,[0,1,2]] = assessed_img[:,:,[2,1,0]]
 
