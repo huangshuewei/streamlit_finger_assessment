@@ -266,12 +266,14 @@ with c1:
 with c3:
     st.title("Not open yet.")
     uploaded_video = st.file_uploader("Choose video", type=["mp4", "mov"])
-    frame_skip = 5 # display every 5 frames
+    frame_skip = 300 # display every 300 frames
 
     if uploaded_video is not None: # run only when user uploads video
         vid = uploaded_video.name
         with open(vid, mode='wb') as f:
             f.write(uploaded_video.read()) # save video to disk
+
+        print(vid)
 
         st.markdown(f"""
         ### Files
