@@ -294,7 +294,8 @@ elif selected_tab == "Video Version (Test)":
 
             # Get video details
             fps = int(vidcap.get(5))
-            frame_skip = 4*fps
+            total_frames = int(vidcap.get(cv2.CAP_PROP_FRAME_COUNT))
+            frame_skip = total_frames//3
 
             cur_frame = 0
             success = True
