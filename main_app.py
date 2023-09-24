@@ -251,7 +251,7 @@ with c1:
         st.image(load_img)   
 
     with c2:
-        st.title("Start analysing after uploading a hand image.")
+        st.title("Analysing after uploading the image.")
         if np.array(load_img) is not None:
             if st.button('Start analysing'):
                 __, assessed_result, assessed_img = getPrediction(load_img)
