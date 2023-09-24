@@ -286,7 +286,7 @@ with c3:
 
         # Get video details
         fps = int(vidcap.get(5))
-        frame_skip = 2*fps
+        frame_skip = 3*fps
 
         cur_frame = 0
         success = True
