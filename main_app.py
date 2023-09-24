@@ -210,9 +210,15 @@ def getPrediction(hand_image):
     
     # plt.imshow(sample_img_color)
     
-    out_put = "Index finger: " + grades[0] + ", Middle finger: " + grades[1] + ", Ring finger: " + grades[2] + ", Little finger: " + grades[3]
-    sample_img_color = cv2.putText(sample_img_color, out_put, (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 
-                                   1, (255, 0, 0), 5, cv2.LINE_AA)
+    out_put = ("Index finger: " + grades[0] + ", Middle finger: " + grades[1] + ", Ring finger: " + grades[2] + ", Little finger: " + grades[3]).split(',')
+    sample_img_color = cv2.putText(sample_img_color, out_put[0], (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 
+                                   1, (0, 0, 255), 5, cv2.LINE_AA)
+    sample_img_color = cv2.putText(sample_img_color, out_put[1], (50, 100), cv2.FONT_HERSHEY_SIMPLEX, 
+                                   1, (0, 0, 255), 5, cv2.LINE_AA)  
+    sample_img_color = cv2.putText(sample_img_color, out_put[2], (50, 150), cv2.FONT_HERSHEY_SIMPLEX, 
+                                   1, (0, 0, 255), 5, cv2.LINE_AA)
+    sample_img_color = cv2.putText(sample_img_color, out_put[]3, (50, 200), cv2.FONT_HERSHEY_SIMPLEX, 
+                                   1, (0, 0, 255), 5, cv2.LINE_AA)
     
     return out_put, grades, sample_img_color
 ####
