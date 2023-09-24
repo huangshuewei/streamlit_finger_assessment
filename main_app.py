@@ -293,7 +293,7 @@ with c3:
 
         # Define codec and create VideoWriter object to save the processed video
         fourcc = cv2.VideoWriter_fourcc(*'XVID')
-        out = cv2.VideoWriter(temp_output_path, fourcc, 0.5, (1080, 1920), isColor=False)
+        out = cv2.VideoWriter(temp_output_path, fourcc, 0.5, (1080, 1920), isColor=True)
 
         set_images = []
 
