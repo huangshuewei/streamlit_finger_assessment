@@ -231,11 +231,13 @@ st.write("This is a prototype which is used to assess finger function.")
 st.write("Methods are based on machine learning and computer vision.")
 load_img = None
 
+# selected_tab = st.radio("Select a Tab", ["Image Version", "Video Version (Test)"])
+tab1, tab2 = st.tabs(["Image Version", "Video Version (Test)"])
 c1, c2, c3, c4 = st.columns(4)
-# tab1, tab2 = st.tabs(["Image Version", "Video Version (Test)"])
-selected_tab = st.radio("Select a Tab", ["Image Version", "Video Version (Test)"])
 
-if selected_tab == "Image Version":
+
+
+with tab1:
     with c1:
         st.title("Upload a frontal-hand image.")
         
@@ -265,7 +267,7 @@ if selected_tab == "Image Version":
                     st.table(df)
                     st.image(assessed_img, width=200)
 
-elif selected_tab == "Video Version (Test)":
+with tab2:
     with c3:
         st.title("Not open yet.")
         uploaded_video = st.file_uploader("Choose video", type=["mp4", "mov", "avi"])
