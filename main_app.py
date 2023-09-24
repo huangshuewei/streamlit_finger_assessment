@@ -327,6 +327,6 @@ with c3:
             video_bytes = video_file.read()
         video_b64 = base64.b64encode(video_bytes).decode()
         st.download_button("Download Processed Video", video_b64, key="download_button")
-
+        uploaded_video = None
             # st.video(out)
             # st.image(set_images)
