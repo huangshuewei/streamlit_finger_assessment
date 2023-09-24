@@ -271,7 +271,9 @@ if selected_tab == "Image Version":
 
 elif selected_tab == "Video Version (Test)":
     with c3:
-        st.title("Not open yet.")
+        st.title("Upload the hand video (recommand 12 seconds).")
+        st.write("(Recommand 12 seconds)")
+
         uploaded_video = st.file_uploader("Choose video", type=["mp4", "mov", "avi"])
 
         if uploaded_video is not None: # run only when user uploads video
