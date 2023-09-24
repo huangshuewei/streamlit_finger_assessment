@@ -266,7 +266,7 @@ with c1:
 with c3:
     st.title("Not open yet.")
     uploaded_video = st.file_uploader("Choose video", type=["mp4", "mov"])
-    frame_skip = 30 # display every 30 frames
+    frame_skip = 60 # display every 60 frames
 
     if uploaded_video is not None: # run only when user uploads video
         vid = uploaded_video.name
@@ -288,7 +288,7 @@ with c3:
         while success:
             success, frame = vidcap.read() # get next frame from video
             print(np.asarray(frame).shape)
-            if cur_frame % frame_skip == 0: # only analyze every n=30 frames
+            if cur_frame % frame_skip == 0: # only analyze every n=60 frames
                 print('frame: {}'.format(cur_frame)) 
                 # print(frame.shape)
                 __, assessed_result, assessed_img = getPrediction(frame)
