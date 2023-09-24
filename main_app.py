@@ -308,10 +308,12 @@ with c3:
         set_images.shape
 
         if set_images is not []:
-            out = cv2.VideoWriter('project.avi',cv2.VideoWriter_fourcc(*'DIVX'), 0.5, (1080, 1920))
+            # out = cv2.VideoWriter('project.avi',cv2.VideoWriter_fourcc(*'DIVX'), 0.5, (1080, 1920))
 
-            for i in range(len(set_images)):
-                out.write(set_images[i])
-            out.release()   
+            # for i in range(len(set_images)):
+            #     out.write(set_images[i])
+            # out.release()   
 
-            st.video(out)
+            # st.video(out)
+
+            st.image(set_images)
