@@ -17,6 +17,8 @@ from keras import models
 from skimage.transform import resize
 import pandas as pd
 from scipy import ndimage
+import tempfile
+import os
 
 ####
 @st.cache(ttl=5)
@@ -208,9 +210,11 @@ def getPrediction(hand_image):
     
     # plt.imshow(sample_img_color)
     
-    # out_put = "Index finger: " + grades[0] + ", Middle finger: " + grades[1] + ", Ring finger: " + grades[2] + ", Little finger: " + grades[3]
+    out_put = "Index finger: " + grades[0] + ", Middle finger: " + grades[1] + ", Ring finger: " + grades[2] + ", Little finger: " + grades[3]
+    sample_img_color = cv2.putText(sample_img_color, 'OpenCV', (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 
+                                   1, (255, 0, 0), 2, cv2.LINE_AA)
     
-    return grades, sample_img_color
+    return out_put, grades, sample_img_color
 ####
 
 logo_img = Image.open("logo.png")
@@ -220,7 +224,7 @@ st.write("This is a prototype which is used to assess finger function.")
 st.write("Methods are based on machine learning and computer vision.")
 load_img = None
 
-c1, c2 = st.columns(2)
+c1, c2, c3 = st.columns(3)
 
 
 with c1:
@@ -244,12 +248,60 @@ with c1:
         st.title("Start analysing after uploading a hand image.")
         if np.array(load_img) is not None:
             if st.button('Start analysing'):
-                assessed_result, assessed_img = getPrediction(load_img)
+                __, assessed_result, assessed_img = getPrediction(load_img)
                 df = pd.DataFrame({'Fingers': ["Index", "Middle", "Ring", "Little"],
                                    'Grades': [assessed_result[0], assessed_result[1], 
                                               assessed_result[2], assessed_result[3]]})
                 st.title("Result:")
                 st.table(df)
                 st.image(assessed_img)
-            
+
+
+        with c3:
+            st.title("Upload a video with a frontal hand.")
+
+            uploaded_vid = st.file_uploader("Select a frontal-hand video...", type=["mp4", "avi", "MOV"])
+
+            if uploaded_vid is not None:
+                temp_dir = tempfile.mkdtemp()
+                temp_output_path = os.path.join(temp_dir, "analysesed_result.mp4")
+                vidcap = cv2.VideoCapture(uploaded_vid)
+
+                # Get video details
+                frame_width = int(vidcap.get(3))
+                frame_height = int(vidcap.get(4))
+                fps = int(vidcap.get(5))
+                
+                # Define codec and create VideoWriter object to save the processed video
+                fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+                out = cv2.VideoWriter(temp_output_path, fourcc, fps, (frame_width, frame_height), isColor=True)
+
+                st.sidebar.progress(0)
+                frame_count = 0
+
+                while True:
+                    ret, frame = vidcap.read()
+                    if not ret:
+                        break
+
+                    # Process
+                    __, assessed_result, assessed_img = getPrediction(frame)
+
+                    # Save/ Write
+                    out.write(assessed_img)
+
+                    # Update progress
+                    frame_count += 1
+                    st.sidebar.progress(frame_count / fps)
+
+                vidcap.release()
+                out.release()
+
+                st.sidebar.text("Processing complete!")
+
+                st.subheader("Processed Video:")
+                st.video(temp_output_path)
+
+
+
 
