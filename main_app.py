@@ -289,8 +289,9 @@ with c3:
             success, frame = vidcap.read() # get next frame from video
             if cur_frame % frame_skip == 0: # only analyze every n=300 frames
                 print('frame: {}'.format(cur_frame)) 
+                print(frame.shape)
 
-                __, assessed_result, assessed_img = getPrediction(frame)
+                # __, assessed_result, assessed_img = getPrediction(frame)
 
                 pil_img = Image.fromarray(assessed_img) # convert opencv frame (with type()==numpy) into PIL Image
                 st.image(pil_img)
