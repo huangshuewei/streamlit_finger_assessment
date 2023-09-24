@@ -304,6 +304,6 @@ with c3:
             cur_frame += 1
         ccc = np.array(set_images)
         print(ccc.shape)
-        st.title(str(ccc.shape)))
+        st.title(str(ccc.shape))
         # if set_images is not []:
         #     out = cv2.VideoWriter('project.avi',cv2.VideoWriter_fourcc(*'DIVX'), 15, size)
