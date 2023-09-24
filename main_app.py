@@ -212,13 +212,13 @@ def getPrediction(hand_image):
     
     out_put = ("Index finger: " + grades[0] + ", Middle finger: " + grades[1] + ", Ring finger: " + grades[2] + ", Little finger: " + grades[3]).split(',')
     sample_img_color = cv2.putText(sample_img_color, out_put[0], (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 
-                                   1, (255, 0, 0), 5, cv2.LINE_AA)
+                                   1, (0, 0, 255), 5, cv2.LINE_AA)
     sample_img_color = cv2.putText(sample_img_color, out_put[1], (50, 100), cv2.FONT_HERSHEY_SIMPLEX, 
-                                   1, (255, 0, 0), 5, cv2.LINE_AA)  
+                                   1, (0, 0, 255), 5, cv2.LINE_AA)  
     sample_img_color = cv2.putText(sample_img_color, out_put[2], (50, 150), cv2.FONT_HERSHEY_SIMPLEX, 
-                                   1, (255, 0, 0), 5, cv2.LINE_AA)
+                                   1, (0, 0, 255), 5, cv2.LINE_AA)
     sample_img_color = cv2.putText(sample_img_color, out_put[3], (50, 200), cv2.FONT_HERSHEY_SIMPLEX, 
-                                   1, (255, 0, 0), 5, cv2.LINE_AA)
+                                   1, (0, 0, 255), 5, cv2.LINE_AA)
     
     return out_put, grades, sample_img_color
 ####
@@ -270,8 +270,8 @@ with c3:
 
     if uploaded_video is not None: # run only when user uploads video
         vid = uploaded_video.name
-        with open(vid, mode='wb') as f:
-            f.write(uploaded_video.read()) # save video to disk
+        # with open(vid, mode='wb') as f:
+        #     f.write(uploaded_video.read()) # save video to disk
 
         # print(vid)
 
@@ -285,6 +285,8 @@ with c3:
         cur_frame = 0
         success = True
 
+        set_images = []
+
         while success:
             success, frame = vidcap.read() # get next frame from video
             print(np.asarray(frame).shape)
@@ -294,7 +296,13 @@ with c3:
                 __, assessed_result, assessed_img = getPrediction(frame)
                 assessed_img[:,:,[0,1,2]] = assessed_img[:,:,[2,1,0]]
 
+                set_images.append(assessed_img)
+
                 # pil_img = Image.fromarray(assessed_img) # convert opencv frame (with type()==numpy) into PIL Image
-                pil_img = Image.fromarray(assessed_img)
-                st.image(pil_img)
+                # pil_img = Image.fromarray(assessed_img)
+                # st.image(pil_img)
             cur_frame += 1
+        
+        print(np.array(set_images).shape)
+        # if set_images is not []:
+        #     out = cv2.VideoWriter('project.avi',cv2.VideoWriter_fourcc(*'DIVX'), 15, size)
