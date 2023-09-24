@@ -297,7 +297,7 @@ with c3:
                 # __, assessed_result, assessed_img = getPrediction(frame)
                 # assessed_img[:,:,[0,1,2]] = assessed_img[:,:,[2,1,0]]
 
-                set_images.append(assessed_img)
+                # set_images.append(assessed_img)
 
                 # pil_img = Image.fromarray(assessed_img) # convert opencv frame (with type()==numpy) into PIL Image
                 # pil_img = Image.fromarray(assessed_img)
