@@ -266,7 +266,7 @@ with c1:
 with c3:
     st.title("Not open yet.")
     uploaded_video = st.file_uploader("Choose video", type=["mp4", "mov"])
-    frame_skip = 60 # display every 60 frames
+    frame_skip = 10 # display every 10 frames
 
     if uploaded_video is not None: # run only when user uploads video
         vid = uploaded_video.name
@@ -288,10 +288,11 @@ with c3:
         while success:
             success, frame = vidcap.read() # get next frame from video
             print(np.asarray(frame).shape)
-            if cur_frame % frame_skip == 0: # only analyze every n=60 frames
+            if cur_frame % frame_skip == 0: # only analyze every n=300 frames
                 print('frame: {}'.format(cur_frame)) 
                 # print(frame.shape)
                 __, assessed_result, assessed_img = getPrediction(frame)
+                assessed_img[:,:,[0,1,2]] = assessed_img[:,:,[2,1,0]]
 
                 # pil_img = Image.fromarray(assessed_img) # convert opencv frame (with type()==numpy) into PIL Image
                 pil_img = Image.fromarray(assessed_img)
