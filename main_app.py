@@ -270,8 +270,8 @@ with c3:
 
     if uploaded_video is not None: # run only when user uploads video
         vid = uploaded_video.name
-        # with open(vid, mode='wb') as f:
-        #     f.write(uploaded_video.read()) # save video to disk
+        with open(vid, mode='wb') as f:
+            f.write(uploaded_video.read()) # save video to disk
 
         # print(vid)
 
