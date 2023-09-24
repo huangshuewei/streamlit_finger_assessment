@@ -292,7 +292,7 @@ with c3:
         success = True
 
         # Define codec and create VideoWriter object to save the processed video
-        fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+        fourcc = cv2.VideoWriter_fourcc('M' ,'P' ,'4' ,'V')
         out = cv2.VideoWriter(temp_output_path, fourcc, 0.5, (1080, 1920), isColor=False)
 
         set_images = []
