@@ -292,7 +292,9 @@ with c3:
             
             if cur_frame % frame_skip == 0: # only analyze every n=300 frames
                 print('frame: {}'.format(cur_frame)) 
-                __, assessed_result, assessed_img = getPrediction(frame)
+
+                print(frame)
+                # __, assessed_result, assessed_img = getPrediction(frame)
                 # assessed_img[:,:,[0,1,2]] = assessed_img[:,:,[2,1,0]]
 
                 set_images.append(assessed_img)
