@@ -291,7 +291,6 @@ with c3:
             if cur_frame % frame_skip == 0: # only analyze every n=300 frames
                 print('frame: {}'.format(cur_frame)) 
                 # print(frame.shape)
-                cv2.imshow(frame)
                 # __, assessed_result, assessed_img = getPrediction(frame)
 
                 # pil_img = Image.fromarray(assessed_img) # convert opencv frame (with type()==numpy) into PIL Image
