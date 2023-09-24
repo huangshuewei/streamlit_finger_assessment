@@ -303,13 +303,13 @@ with c3:
                 # st.image(pil_img)
             cur_frame += 1
         
-        set_images = np.array(set_images)
+        # set_images = np.array(set_images)
 
-        if set_images is not []:
-            out = cv2.VideoWriter('project.avi',cv2.VideoWriter_fourcc(*'DIVX'), 0.5, (1080, 1920))
+        # if set_images is not []:
+        #     out = cv2.VideoWriter('project.avi',cv2.VideoWriter_fourcc(*'DIVX'), 0.5, (1080, 1920))
 
-            for i in range(len(set_images)):
-                out.write(set_images[i])
-            out.release()   
+        #     for i in range(len(set_images)):
+        #         out.write(set_images[i])
+        #     out.release()   
 
-            st.video(out)
+        #     st.video(out)
