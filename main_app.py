@@ -264,48 +264,29 @@ with c1:
 
 
 with c3:
-    st.title("(Not open yet.)")
-    uploaded_vid = st.file_uploader("Select a frontal-hand video...", type=["mp4", "avi", "MOV"])
-       
-    if uploaded_vid is not None:  
-        temp_dir = tempfile.mkdtemp()
-        temp_output_path = os.path.join(temp_dir, "analysesed_result.mp4")
-        vidcap = cv2.VideoCapture(uploaded_vid)
+    st.title("Not open yet.")
+    uploaded_video = st.file_uploader("Choose video", type=["mp4", "mov"])
+    frame_skip = 300 # display every 300 frames
 
-        # Get video details
-        frame_width = int(vidcap.get(3))
-        frame_height = int(vidcap.get(4))
-        fps = int(vidcap.get(5))
-                    
-        # Define codec and create VideoWriter object to save the processed video
-        fourcc = cv2.VideoWriter_fourcc(*'mp4v')
-        out = cv2.VideoWriter(temp_output_path, fourcc, fps, (frame_width, frame_height), isColor=True)
+    if uploaded_video is not None: # run only when user uploads video
+        vid = uploaded_video.name
+        with open(vid, mode='wb') as f:
+            f.write(uploaded_video.read()) # save video to disk
 
-        st.sidebar.progress(0)
-        frame_count = 0
-        while True:
-            ret, frame = vidcap.read()
-            if not ret:
-                break
+        st.markdown(f"""
+        ### Files
+        - {vid}
+        """,
+        unsafe_allow_html=True) # display file name
 
-            # Process
-            __, assessed_result, assessed_img = getPrediction(frame)
+        vidcap = cv2.VideoCapture(vid) # load video from disk
+        cur_frame = 0
+        success = True
 
-            # Save/ Write
-            out.write(assessed_img)
-
-            # Update progress
-            frame_count += 1
-            st.sidebar.progress(frame_count / fps)
-
-        vidcap.release()
-        out.release()
-
-        st.sidebar.text("Processing complete!")
-
-        st.subheader("Processed Video:")
-        st.video(temp_output_path)
-
-
-
-
+        while success:
+            success, frame = vidcap.read() # get next frame from video
+            if cur_frame % frame_skip == 0: # only analyze every n=300 frames
+                print('frame: {}'.format(cur_frame)) 
+                pil_img = Image.fromarray(frame) # convert opencv frame (with type()==numpy) into PIL Image
+                st.image(pil_img)
+            cur_frame += 1
