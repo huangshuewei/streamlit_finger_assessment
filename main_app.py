@@ -263,50 +263,48 @@ with c1:
                 st.image(assessed_img)
 
 
-        with c3:
-            st.title("Upload a video with a frontal hand.")
+with c3:
+  st.title("Upload a video with a frontal hand.")
+  uploaded_vid = st.file_uploader("Select a frontal-hand video...", type=["mp4", "avi", "MOV"])
+       
+  if uploaded_vid is not None:
+    temp_dir = tempfile.mkdtemp()
+    temp_output_path = os.path.join(temp_dir, "analysesed_result.mp4")
+    vidcap = cv2.VideoCapture(uploaded_vid)
 
-            uploaded_vid = st.file_uploader("Select a frontal-hand video...", type=["mp4", "avi", "MOV"])
-
-            if uploaded_vid is not None:
-                temp_dir = tempfile.mkdtemp()
-                temp_output_path = os.path.join(temp_dir, "analysesed_result.mp4")
-                vidcap = cv2.VideoCapture(uploaded_vid)
-
-                # Get video details
-                frame_width = int(vidcap.get(3))
-                frame_height = int(vidcap.get(4))
-                fps = int(vidcap.get(5))
+    # Get video details
+    frame_width = int(vidcap.get(3))
+    frame_height = int(vidcap.get(4))
+    fps = int(vidcap.get(5))
                 
-                # Define codec and create VideoWriter object to save the processed video
-                fourcc = cv2.VideoWriter_fourcc(*'mp4v')
-                out = cv2.VideoWriter(temp_output_path, fourcc, fps, (frame_width, frame_height), isColor=True)
+    # Define codec and create VideoWriter object to save the processed video
+    fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+    out = cv2.VideoWriter(temp_output_path, fourcc, fps, (frame_width, frame_height), isColor=True)
 
-                st.sidebar.progress(0)
-                frame_count = 0
+    st.sidebar.progress(0)
+    frame_count = 0
+    while True:
+      ret, frame = vidcap.read()
+      if not ret:
+        break
 
-                while True:
-                    ret, frame = vidcap.read()
-                    if not ret:
-                        break
+      # Process
+      __, assessed_result, assessed_img = getPrediction(frame)
 
-                    # Process
-                    __, assessed_result, assessed_img = getPrediction(frame)
+      # Save/ Write
+      out.write(assessed_img)
 
-                    # Save/ Write
-                    out.write(assessed_img)
+      # Update progress
+      frame_count += 1
+      st.sidebar.progress(frame_count / fps)
 
-                    # Update progress
-                    frame_count += 1
-                    st.sidebar.progress(frame_count / fps)
+      vidcap.release()
+      out.release()
 
-                vidcap.release()
-                out.release()
+      st.sidebar.text("Processing complete!")
 
-                st.sidebar.text("Processing complete!")
-
-                st.subheader("Processed Video:")
-                st.video(temp_output_path)
+      st.subheader("Processed Video:")
+      st.video(temp_output_path)
 
 
 
