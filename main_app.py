@@ -217,7 +217,7 @@ def getPrediction(hand_image):
                                    1, (0, 0, 255), 5, cv2.LINE_AA)  
     sample_img_color = cv2.putText(sample_img_color, out_put[2], (50, 150), cv2.FONT_HERSHEY_SIMPLEX, 
                                    1, (0, 0, 255), 5, cv2.LINE_AA)
-    sample_img_color = cv2.putText(sample_img_color, out_put[]3, (50, 200), cv2.FONT_HERSHEY_SIMPLEX, 
+    sample_img_color = cv2.putText(sample_img_color, out_put[3], (50, 200), cv2.FONT_HERSHEY_SIMPLEX, 
                                    1, (0, 0, 255), 5, cv2.LINE_AA)
     
     return out_put, grades, sample_img_color
