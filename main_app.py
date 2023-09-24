@@ -273,8 +273,6 @@ with c3:
         with open(vid, mode='wb') as f:
             f.write(uploaded_video.read()) # save video to disk
 
-        print(vid)
-
         st.markdown(f"""
         ### Files
         - {vid}
