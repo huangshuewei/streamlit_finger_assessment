@@ -234,7 +234,7 @@ load_img = None
 c1, c2, c3, c4 = st.columns(4)
 tab1, tab2 = st.tabs(["Image Version", "Video Version (Test)"])
 
-with tab1:
+if tab1 == "Image Version":
     with c1:
         st.title("Upload a frontal-hand image.")
         
@@ -250,7 +250,7 @@ with tab1:
                 load_img = ndimage.rotate(load_img, 90, reshape=True)
             
             print("check point")
-            st.image(load_img)   
+            st.image(load_img, width=200)   
 
         with c2:
             st.title("Analysing after uploading the image.")
@@ -262,9 +262,9 @@ with tab1:
                                                 assessed_result[2], assessed_result[3]]})
                     st.title("Result:")
                     st.table(df)
-                    st.image(assessed_img)
+                    st.image(assessed_img, width=200)
 
-with tab2:
+elif tab2 == "Video Version (Test)":
     with c3:
         st.title("Not open yet.")
         uploaded_video = st.file_uploader("Choose video", type=["mp4", "mov", "avi"])
@@ -331,4 +331,4 @@ with tab2:
             uploaded_video = None
                 # st.video(out)
         with c4:
-            st.image(set_images)
+            st.image(set_images, width=200)
