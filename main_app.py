@@ -266,7 +266,7 @@ with c1:
 with c3:
     st.title("Not open yet.")
     uploaded_video = st.file_uploader("Choose video", type=["mp4", "mov"])
-    frame_skip = 120 # display every 60 frames
+    frame_skip = 60 # display every 60 frames
 
     if uploaded_video is not None: # run only when user uploads video
         vid = uploaded_video.name
