@@ -264,7 +264,7 @@ with c1:
 
 
 with c3:
-    st.title("Upload a video with a frontal hand. (Not open yet.)")
+    st.title("(Not open yet.)")
     uploaded_vid = st.file_uploader("Select a frontal-hand video...", type=["mp4", "avi", "MOV"])
        
     if uploaded_vid is not None:  
