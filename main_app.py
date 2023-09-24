@@ -310,17 +310,17 @@ with c3:
         
         set_images = np.array(set_images)
 
-        set_images.shape
+        # set_images.shape
 
-        if set_images is not []:
+        # if set_images is not []:
 
-            # Write the processed frame to the output video
-            for i in range(len(set_images)):
-                out.write(set_images[i])
-        vidcap.release()
-        out.release()
+        #     # Write the processed frame to the output video
+        #     for i in range(len(set_images)):
+        #         out.write(set_images[i])
+        # vidcap.release()
+        # out.release()
 
-        st.video(temp_output_path)
+        # st.video(temp_output_path)
 
         # Offer download link for processed video
         # with open(temp_output_path, "rb") as video_file:
@@ -329,4 +329,4 @@ with c3:
         # st.download_button("Download Processed Video", video_b64, key="download_button")
         uploaded_video = None
             # st.video(out)
-            # st.image(set_images)
+        st.image(set_images)
